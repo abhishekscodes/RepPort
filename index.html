@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepPort</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFD166" stroke="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span>RepPort</span>
+            </div>
+
+            <div class="menu-section">
+                <h3 class="menu-heading">Class Info</h3>
+                <div class="info-item">
+                    <span class="info-label">Advisor</span>
+                    <span class="info-value">Ms.M.Geethanjali</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Section</span>
+                    <span class="info-value">CSE A</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Total Strength</span>
+                    <span class="info-value">62</span>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h3 class="menu-heading">Stats</h3>
+                <ul class="stats-list">
+                    <li class="stat-box present-box">
+                        <span class="stat-title">Present</span>
+                        <span class="stat-number" id="stat-present">62</span>
+                    </li>
+                    <li class="stat-box absent-box">
+                        <span class="stat-title">Absent</span>
+                        <span class="stat-number" id="stat-absent">0</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="actions">
+                <button id="generate-btn" class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy Report
+                </button>
+                <button id="edit-list-btn" class="btn-ghost">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    Edit Class List
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="date-display">
+                    <span class="date-month" id="display-month">Feb</span>
+                    <span class="date-day" id="display-day">4</span>
+                </div>
+                <div class="greeting">
+                    <h1 id="greeting-text">Good Afternoon.</h1>
+                    <p>Who is absent today?</p>
+                </div>
+                <div class="date-picker-wrapper">
+                    <input type="date" id="date" title="Select Date">
+                </div>
+            </header>
+
+            <div class="students-container">
+                <div class="student-list" id="student-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Editing List -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal">
+            <h2>Edit Class List</h2>
+            <p>Paste your full class list here in order. One name per line.</p>
+            <div class="modal-body">
+                <textarea id="class-textarea" rows="15" placeholder="1. Name..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button id="close-modal-btn" class="btn-ghost">Cancel</button>
+                <button id="save-list-btn" class="btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Report copied to clipboard!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
