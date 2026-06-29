@@ -498,10 +498,15 @@ body {
     
     .stats-list {
         flex-direction: row;
-        gap: 1rem;
+        gap: 0.5rem;
     }
     .stat-box {
         flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.5rem;
+        gap: 0.25rem;
+        text-align: center;
     }
 
     .actions {
