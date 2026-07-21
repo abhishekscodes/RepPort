@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let report = `Date: ${formattedDate}\n`;
         report += `Advisor Name: Mrs.M.Geethanjali\n`;
         report += `Section/Branch: CSE A\n`;
+        report += `Total Strength: ${total}\n`;
         report += `Present: ${presentCount}\n`;
         report += `Absent: ${absentCount}\n`;
         if (ondutyCount > 0) {
