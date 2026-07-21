@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "ESWAR K B", "FAZIA S", "GANESH B", "GHOUSE AFSAL I", "GIJO MICHAEL STEPHAN J",
         "GOHUL HARIS V", "GOKILAVANI P R", "GOWSIGA M", "GRACE RAJ P",
         "GUHAN D", "HARIHARA ARAVINDHAN T", "HARIHARAN N", "HASANA FRADHOUS S",
-        "HEMADHARSINI M A", "HEMAPRASATHA A", "HIMESH M", "IRENE PRICILLA A",
+        "HEMADHARSINI M A", "HEMAPRASATH A A", "HIMESH M", "IRENE PRICILLA A",
         "ISHA GANESH G", "IYOKA VIGNESHWARAH R R", "JABINA S", "JAFINA ZEENATH M",
         "PACKYARAJ R", "SACHIN S", "SANGARESH M"
     ];
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "ESWAR K B": "M", "FAZIA S": "F", "GANESH B": "M", "GHOUSE AFSAL I": "M", "GIJO MICHAEL STEPHAN J": "M",
         "GOHUL HARIS V": "M", "GOKILAVANI P R": "F", "GOWSIGA M": "F", "GRACE RAJ P": "M",
         "GUHAN D": "M", "HARIHARA ARAVINDHAN T": "M", "HARIHARAN N": "M", "HASANA FRADHOUS S": "F",
-        "HEMADHARSINI M A": "F", "HEMAPRASATHA A": "M", "HIMESH M": "M", "IRENE PRICILLA A": "F",
+        "HEMADHARSINI M A": "F", "HEMAPRASATH A A": "M", "HIMESH M": "M", "IRENE PRICILLA A": "F",
         "ISHA GANESH G": "F", "IYOKA VIGNESHWARAH R R": "M", "JABINA S": "F", "JAFINA ZEENATH M": "F",
         "PACKYARAJ R": "M", "SACHIN S": "M", "SANGARESH M": "M"
     };
@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let students = [];
     let absentStudents = new Set();
     let ondutyStudents = new Set();
+    let easterEggStudents = new Set();
+    const EASTER_EGG_NAME = "Abhishek Kumaran A J";
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     function toProperCase(str) {
@@ -67,6 +69,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (word.length === 0) return word;
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         }).join(' ');
+    }
+
+    function spawnLoveEmojis(x, y) {
+        const emojis = ['💖', '💕', '🎈', '🥰', '💗', '💓'];
+        for (let i = 0; i < 15; i++) {
+            const el = document.createElement('div');
+            el.className = 'floating-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const offsetX = (Math.random() - 0.5) * 80;
+            el.style.left = `${x + offsetX}px`;
+            el.style.top = `${y}px`;
+            const duration = 1.5 + Math.random() * 1.5;
+            const delay = Math.random() * 0.2;
+            el.style.animation = `floatUp ${duration}s ease-in ${delay}s forwards`;
+            document.body.appendChild(el);
+            setTimeout(() => { el.remove(); }, (duration + delay) * 1000);
+        }
     }
 
     function init() {
@@ -116,7 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             const isAbsent = absentStudents.has(name);
             const isOnDuty = ondutyStudents.has(name);
-            item.className = `student-item ${isAbsent ? 'absent' : ''} ${isOnDuty ? 'onduty' : ''}`;
+            const isEasterEgg = easterEggStudents.has(name);
+            item.className = `student-item ${isAbsent ? 'absent' : ''} ${isOnDuty ? 'onduty' : ''} ${isEasterEgg ? 'shameera' : ''}`;
 
             // Checkbox Circle
             const checkbox = document.createElement('div');
@@ -125,23 +145,38 @@ document.addEventListener('DOMContentLoaded', () => {
             // Name
             const nameSpan = document.createElement('span');
             nameSpan.className = 'student-name';
-            nameSpan.textContent = `${index + 1}. ${name}`; // include number from array index
+            nameSpan.textContent = isEasterEgg ? 'Shameera Parveen 💖💕' : `${index + 1}. ${name}`;
 
             // Tag
             const tagSpan = document.createElement('span');
             tagSpan.className = 'student-tag';
-            tagSpan.textContent = isAbsent ? '#absent' : (isOnDuty ? '#on-duty' : '#present');
+            tagSpan.textContent = isEasterEgg ? '#love' : (isAbsent ? '#absent' : (isOnDuty ? '#on-duty' : '#present'));
 
             item.appendChild(checkbox);
             item.appendChild(nameSpan);
             item.appendChild(tagSpan);
 
             item.addEventListener('click', () => {
+                const wasOnDuty = ondutyStudents.has(name);
                 toggleState(name);
                 const nowAbsent = absentStudents.has(name);
                 const nowOnDuty = ondutyStudents.has(name);
-                item.className = `student-item ${nowAbsent ? 'absent' : ''} ${nowOnDuty ? 'onduty' : ''}`;
-                tagSpan.textContent = nowAbsent ? '#absent' : (nowOnDuty ? '#on-duty' : '#present');
+                const nowEasterEgg = easterEggStudents.has(name);
+                
+                item.className = `student-item ${nowAbsent ? 'absent' : ''} ${nowOnDuty ? 'onduty' : ''} ${nowEasterEgg ? 'shameera' : ''}`;
+                
+                if (nowEasterEgg) {
+                    tagSpan.textContent = '#love';
+                    nameSpan.textContent = 'Shameera Parveen 💖💕';
+                    if (wasOnDuty) {
+                        const rect = item.getBoundingClientRect();
+                        spawnLoveEmojis(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }
+                } else {
+                    tagSpan.textContent = nowAbsent ? '#absent' : (nowOnDuty ? '#on-duty' : '#present');
+                    nameSpan.textContent = `${index + 1}. ${name}`;
+                }
+                
                 updateStats();
             });
 
@@ -150,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleState(name) {
-        if (!absentStudents.has(name) && !ondutyStudents.has(name)) {
+        if (!absentStudents.has(name) && !ondutyStudents.has(name) && !easterEggStudents.has(name)) {
             // Present -> Absent
             absentStudents.add(name);
         } else if (absentStudents.has(name)) {
@@ -158,8 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
             absentStudents.delete(name);
             ondutyStudents.add(name);
         } else if (ondutyStudents.has(name)) {
-            // On-Duty -> Present
+            // On-Duty -> EasterEgg or Present
             ondutyStudents.delete(name);
+            if (name === EASTER_EGG_NAME) {
+                easterEggStudents.add(name);
+            }
+        } else if (easterEggStudents.has(name)) {
+            // EasterEgg -> Present
+            easterEggStudents.delete(name);
         }
     }
 
@@ -198,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('fullClassList', JSON.stringify(students));
         absentStudents.clear();
         ondutyStudents.clear();
+        easterEggStudents.clear();
 
         renderList();
         updateStats();
